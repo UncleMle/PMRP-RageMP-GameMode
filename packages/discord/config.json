@@ -1,0 +1,9 @@
+{
+    "token" : "",
+    "prefix": "!",
+    "serverName": "",
+    "timerDelayInMinutes": 0.1,
+    "SERVER_ID": 1234,
+    "BOT_ID": 1234,
+    "channelId": 1234
+}

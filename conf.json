@@ -1,0 +1,14 @@
+{
+    "announce": true,
+    "allow-cef-debugging": true,
+    "gamemode": "freeroam",
+    "name": "[EU][Voice][Text][HeavyRP] Paramount Roleplay (Voice & Text | Heavy Roleplay)",
+    "url": "https://discord.gg/5SqBCbuzqR",
+    "maxplayers": 2000,
+    "language": "us",
+    "enable-nodejs": true,
+    "port": 22005,
+    "stream-distance": 700.0,
+    "voice-chat": true,
+    "voice-chat-sample-rate": 48000
+}

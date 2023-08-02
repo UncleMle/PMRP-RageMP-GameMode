@@ -1,0 +1,41 @@
+{
+  "dependencies": {
+    "@jshor/colors": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "discord.js": "^14.11.0",
+    "events": "^3.3.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "fs": "^0.0.1-security",
+    "get-json": "^1.0.1",
+    "howler": "^2.2.3",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
+    "imgur": "^2.2.0",
+    "jsonwebtoken": "^9.0.0",
+    "lz-string": "^1.5.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^2.6.12",
+    "nodemailer": "^6.9.1",
+    "npm": "^9.6.7",
+    "sequelize": "^6.31.0",
+    "sequelize-cli": "^6.6.0",
+    "weather-js": "^2.0.0",
+    "webscrape": "^3.0.0"
+  },
+  "devDependencies": {
+    "@ragempcommunity/types-client": "^2.1.3",
+    "@ragempcommunity/types-server": "^2.1.1",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.38.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
+  }
+}

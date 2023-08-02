@@ -1,0 +1,29 @@
+{
+    "items": {
+        "1": {
+            "name": "Water Bottle",
+            "img": "waterBottle.png",
+            "equippable": false
+        },
+        "2": {
+            "name": "Pistol .50",
+            "img": "pistol50.png",
+            "equippable": true
+        },
+        "3": {
+            "name": "Burger",
+            "img": "hamburger.png",
+            "equippable": false
+        },
+        "4": {
+            "name": "Weed",
+            "img": "cannabis.png",
+            "equippable": false
+        },
+        "5": {
+            "name": "Assault Rifle",
+            "img": "rifle.png",
+            "equippable": false
+        }
+    }
+}

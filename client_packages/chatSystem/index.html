@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div id="moveablediv" style="user-select: none; ">
+    <div id="header" style="user-select: none;"></div>
+    <div class="chatBox" id="chatbox" style="user-select: none;">
+      <div class="messageList" id="messageslist" style="user-select: none;"></div>
+      <input autocomplete="on" autocapitalize="on" class="hide" type="text" spellcheck="true" id="chatinput"
+        maxlength="7000" />
+      <span class="hide" id="charCount" style="user-select: none;"></span>
+      <script src="https://kit.fontawesome.com/5730f36e6a.js" crossorigin="anonymous"></script>
+    </div>
+  </div>
+  <style>
+    #moveablediv {
+      position: absolute;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script>
+    let settings = {
+      input: true,
+      removeInputColors: true,
+      characterCount: false,
+      lowerCaseCommand: true,
+      scrollbar: true, //   -webkit-user-select: none;
+      maxLength: 1200,
+      fontSize: 1,
+      chatToggle: false,
+      timeStamp: true,
+      pageSize: 18,
+    };
+
+    function setToggleTimestamp(timeStamp) {
+      settings.timeStamp = timeStamp;
+      $(".timeStamp").show();
+      MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+    }
+
+    function setFontSize(fontSize) {
+      settings.fontSize = fontSize;
+      //$(".messageList").attr("style", `font-size: ${fontSize}px`);
+      $("*").attr("style", `font-size: ${fontSize}px`);
+      //console.log(MESSAGE_LIST.scrollHeight, MESSAGE_LIST.scrollTop)
+      //MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+          $("#chatbox").attr("style", `font-size: ${fontSize}vw`);
+        //$(".messageList").css("height", `${fontSize}rem`);
+          //MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+    }
+
+    function setPageSize(pageSize) {
+      settings.pageSize = pageSize;
+      document.getElementsByClassName('message').style.$('font-size') = pageSize + "px";
+      MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+    }
+
+    function setToggleChat(chatToggle) {
+      settings.chatToggle = chatToggle;
+      if (chatToggle) {
+        $("#messageslist").show();
+        $("#chatinput").attr("placeholder", "Enter your message");
+      } else {
+        $("#messageslist").hide();
+        $("#chatinput").attr(
+          "placeholder",
+          "You disabled the chat, /togglechat to re-enable"
+        );
+      }
+    }
+
+    let CHAT_BOX, MESSAGE_LIST, CHAT_INPUT, CHAR_COUNT;
+
+    let chatAgain = new Date();
+
+    let chatActive = true;
+    let chatInputStatus = false;
+
+    const inputHistory = [];
+    let inputHistoryPosition = -1;
+    let inputCache = "";
+
+    const chatAPI = {
+      clear: () => {
+        MESSAGE_LIST.innerHTML = "";
+        for (let i = 0; i < 50; i++) chatAPI.push(" ");
+      },
+
+      push: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span style="color: #DBDBDB; font-size:85%;}">${getDateString()}   </span><i class="fas fa-comment-dots"></i>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      server: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span style="color: #ca75ff; font-size:85%;}">${getDateString()}  <i class="fa-solid fa-server"></i> </span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+
+      adminPush: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: red; font-size:85%;}">${getDateString()}       </span><i class="fa-solid fa-shield" style="color:red;"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+
+      staffMsg: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: #DBDBDB; font-size:85%;}">${getDateString()}     </span><i class="fa-solid fa-shield" style="color:#b1a1ff;"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      sendMessage: (icon, iconColour, text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: #DBDBDB; font-size:85%;}">${getDateString()}     </span><i class="${icon}" style="color:${iconColour};"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      errorP: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: red; font-size:85%;}">${getDateString()}      <i class="fa-solid fa-circle-exclamation" style="color:red;"></i></span></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      announce: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: red; font-size:85%;}">${getDateString()}      <i class="fa-solid fa-bullhorn"></i></i></span></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      info: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: #fff652; font-size:85%;}">${getDateString()}      <i class="fa-solid fa-circle-info"></i></span></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+
+      ac: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+        <div class="message stroke">
+           ${settings.timeStamp ? `<span class="timeStamp"><span style="color: red; font-size:85%;}">${getDateString()}      <i class="fa-solid fa-crosshairs"></i></span></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+        </div>`;
+
+
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      afk: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #ffa570; font-size:85%;}">${getDateString()}   <i class="fa-solid fa-keyboard"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      question: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #6dbce6; font-size:85%;}">${getDateString()}   <i class="fa-solid fa-circle-question"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      quit: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #dcabff; font-size:85%;}">${getDateString()}   <i class="fa fa-sign-out"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      suc: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #78cc78; font-size:85%;}">${getDateString()}   <i class="fas fa-check-square"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      report: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #00C1FF; font-size:85%;}">${getDateString()}   <i class="fa fa-file"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      me: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #e48aff; font-size:85%;}">${getDateString()}   <i class="fa-solid fa-asterisk"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      ldo: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #A781FF; font-size:85%;}">${getDateString()}   <i class="fa-solid fa-asterisk"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      dice: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #8ae4ff; font-size:85%;}">${getDateString()}   <i class="fa-solid fa-dice"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      pmgrey: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #DBDBDB; font-size:85%;}">${getDateString()}  <i class="fa-solid fa-message"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      pmgrey: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #919191; font-size:85%;}">${getDateString()}  <i class="fa-solid fa-message"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      pmgreen: (text) => {
+        if (text.length < 1) return;
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            ${settings.timeStamp ? `<span style="color: #78cc78; font-size:85%;}">${getDateString()}  <i class="fa-solid fa-message"></i></span>` : `<span class="timeStamp" style="display: none;">${getDateString()}</span>`}
+            <span>${text}</span>
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      empty: () => {
+        if (!chatInputStatus) { chatAPI.show(true); }
+
+        MESSAGE_LIST.innerHTML += `
+          <div class="message stroke">
+            </div>`;
+        MESSAGE_LIST.childElementCount > 100 &&
+          MESSAGE_LIST.firstElementChild.remove();
+        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+      },
+
+      activate: (toggle) => {
+        if (!toggle && chatActive) setChatInputStatus(false);
+        chatActive = toggle;
+      },
+
+      show: (toggle) => {
+        if (!toggle && chatInputStatus) setChatInputStatus(false);
+
+        toggle
+          ? (CHAT_BOX.className = "chatBox")
+          : (CHAT_BOX.className = "hide");
+      },
+    };
+
+    function chatStopInput() {
+      settings.input = false;
+    }
+
+    function chatStartInput() {
+      settings.input = true;
+    }
+
+    if (typeof mp !== "undefined") {
+      const api = {
+        "chat:push": chatAPI.push,
+        "chat:clear": chatAPI.clear,
+        "chat:activate": chatAPI.activate,
+        "chat:show": chatAPI.show
+      };
+
+      for (const fn in api) {
+        mp.events.add(fn, api[fn]);
+      }
+    }
+
+    const setChatInputStatus = (status) => {
+      if ((!chatActive && status) || status == chatInputStatus) return;
+
+      mp.invoke("focus", status);
+      mp.invoke("setTypingInChatState", status);
+      mp.trigger('chatActive', status);
+      if (status) {
+        chatInputStatus = true;
+        CHAT_INPUT.className = "inputBar";
+        if (settings.characterCount)
+          CHAR_COUNT.className = "charCount stroke";
+        CHAT_INPUT.focus();
+      } else {
+        chatInputStatus = false;
+        CHAT_INPUT.className = "hide";
+        CHAR_COUNT.className = "hide";
+      }
+    };
+
+    const getDateString = () => {
+      const date = new Date();
+      const h = "0" + date.getHours().toString();
+      const m = "0" + date.getMinutes().toString();
+      const s = "0" + date.getSeconds().toString();
+      return ``;
+      //return `${h.substr(h.length - 2)}:${m.substr(m.length - 2)}`;
+    };
+
+    String.prototype.lowerCaseFirstWord = function () {
+      const word = this.split(" ")[0];
+      return this.replace(new RegExp(word, "gi"), word.toLowerCase());
+    };
+
+    const updateCharCount = () => {
+      CHAR_COUNT.innerText = `${CHAT_INPUT.value.length}/${settings.maxLength}`;
+    };
+
+    const sendInput = () => {
+      mp.trigger("setLastMessage", Math.floor(new Date().getTime() / 1000));
+      let message = CHAT_INPUT.value.trim();
+      console.log(message)
+      if (settings.removeInputColors)
+        message = message.replace(/(?=!{).:*("DROP?<=})/g, "");
+
+      if (message.length < 1) {
+        setChatInputStatus(false);
+        return;
+      }
+      const chatNow = new Date();
+      if (chatAgain < chatNow) {
+        if (message[0] == "/") {
+          if (message.length < 2) {
+            setChatInputStatus(false);
+            return;
+          }
+          mp.invoke(
+            "command",
+            settings.lowerCaseCommand
+              ? message.lowerCaseFirstWord().substr(1)
+              : message.substr(1)
+          );
+        } else {
+          mp.invoke("chatMessage", message);
+        }
+
+        inputHistory.unshift(message);
+        inputHistory.length > 100 && inputHistory.pop();
+        CHAT_INPUT.value = "";
+        inputHistoryPosition = -1;
+        CHAR_COUNT.innerText = `0/${settings.maxLength}`;
+        setChatInputStatus(false);
+        chatAgain = new Date(chatNow.getTime() + 100);
+      } else {
+        inputHistory.unshift(message);
+        inputHistory.length > 100 && inputHistory.pop();
+        CHAT_INPUT.value = "";
+        inputHistoryPosition = -1;
+        CHAR_COUNT.innerText = `0/${settings.maxLength}`;
+        setChatInputStatus(false);
+        chatAPI.push(
+          '<span style="color: #ffce3b;}">[INFO]</span><span style="color: #919191;}"> :</span> Wait 0.1 second(s) between messages!'
+        );
+      }
+    };
+
+
+    const onArrowUp = () => {
+      if (inputHistoryPosition == inputHistory.length - 1) return;
+
+      if (inputHistoryPosition == -1) inputCache = CHAT_INPUT.value;
+
+      inputHistoryPosition++;
+      CHAT_INPUT.value = inputHistory[inputHistoryPosition];
+      updateCharCount();
+    };
+
+    const onArrowDown = () => {
+      if (inputHistoryPosition === -1) return;
+
+      if (inputHistoryPosition === 0) {
+        CHAT_INPUT.value = inputCache;
+        inputHistoryPosition = -1;
+        return;
+      }
+
+      inputHistoryPosition--;
+      CHAT_INPUT.value = inputHistory[inputHistoryPosition];
+      updateCharCount();
+    };
+
+    /*
+          setInterval(() => {
+            if(!chatInputStatus) {
+              chatAPI.show(false);
+            }
+          }, 120000); // 2 mins
+    */
+
+    const onDocumentReady = () => {
+      CHAT_BOX = document.getElementById("chatbox");
+      MESSAGE_LIST = document.getElementById("messageslist");
+      CHAT_INPUT = document.getElementById("chatinput");
+      CHAR_COUNT = document.getElementById("charCount");
+      CHAT_INPUT.oninput = updateCharCount;
+      CHAT_INPUT.maxLength = settings.maxLength;
+
+      if (settings.scrollbar) {
+        MESSAGE_LIST.style.overflow = "auto";
+        MESSAGE_LIST.style.userSelect = "none";
+      }
+
+      var hideChat = setInterval(() => {
+        if (!chatInputStatus && chatActive) {
+          chatAPI.show(false);
+        }
+      }, 120000); // 2 mins
+
+      setInterval(() => {
+        if (chatInputStatus && chatActive) {
+          mp.invoke('chatActive', true);
+        }
+        else {
+          mp.invoke('chatActive', false);
+        }
+      }, 100);
+
+      updateCharCount();
+
+      for (let i = 0; i < 110; i++) { chatAPI.empty() } // flood with empty strings on doc start
+
+      document.addEventListener("keydown", (e) => {
+        switch (e.key) {
+          case "t":
+            //chatAPI.push(`${chatInputStatus} ${chatActive} `)
+            if (!chatInputStatus && chatActive) {
+              chatAPI.show(true);
+              setChatInputStatus(true);
+              e.preventDefault();
+            }
+            break;
+
+          case "Enter":
+            if (chatInputStatus) {
+              mp.invoke("setLastMessage", new Date().getTime());
+              sendInput();
+            }
+            break;
+
+          case "ArrowUp":
+            if (chatInputStatus) {
+              onArrowUp();
+              e.preventDefault();
+            }
+            break;
+
+          case "ArrowDown":
+            if (chatInputStatus) {
+              onArrowDown();
+              e.preventDefault();
+            }
+            break;
+
+          case "PageUp":
+            if (chatInputStatus) {
+              MESSAGE_LIST.scrollTop -= 15;
+            }
+            break;
+
+          case "PageDown":
+            if (chatInputStatus) {
+              MESSAGE_LIST.scrollTop += 15;
+            }
+            break;
+
+          case "Escape":
+            if (chatInputStatus && chatActive) {
+              setChatInputStatus(false);
+              mp.invoke("setLastMessage", new Date().getTime());
+              e.preventDefault();
+            }
+            break;
+        }
+      });
+    };
+
+
+    // Stop space bar control
+    window.addEventListener('keydown', function () { if (event.keyCode == 32) { document.body.style.overflow = "hidden"; } });
+    window.addEventListener('keyup', function () { if (event.keyCode == 32) { document.body.style.overflow = "auto"; } });
+
+    document.addEventListener("DOMContentLoaded", onDocumentReady);
+
+  </script>
+</body>
+
+</html>

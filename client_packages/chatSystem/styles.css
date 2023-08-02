@@ -1,0 +1,145 @@
+body {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+    outline: none;
+}
+body::-webkit-scrollbar {display: none;} /* Chrome, Safari and Opera */
+body {-ms-overflow-style: none;}  /* IE and Edge */
+html {scrollbar-width: none;}  /* Firefox */
+
+body:focus{
+    border: none;
+}
+
+
+* {
+    font-family: Myriad Pro, Segoe UI, Verdana, sans-serif;
+    font-weight: 510;
+    font-size: 16px;
+    background-color: rgba(0, 0, 0, 0);
+    user-select: none;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari, Chrome, Opera, Samsung */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Edge, IE */
+    user-select: none; /* Modern browsers */
+    outline: none;
+
+}
+
+body {
+    user-select: none;
+}
+
+.chatBox {
+    margin: 0.9em 0 0 0.5em;
+    width:40em;
+    user-select: none;
+}
+
+.messageList {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 22em;
+    direction: rtl;
+    user-select: none;
+}
+
+.messageList div {
+    margin-left: 0.25em;
+    direction: ltr;
+    user-select: none;
+
+}
+
+.messageList::-webkit-scrollbar {
+    width: 0.6em;
+    height: 0.5em;
+    width: .4vw;
+    user-select: none;
+}
+
+.messageList::-webkit-scrollbar-track {
+    background: transparent;
+    user-select: none;
+}
+
+.messageList::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.425);
+    border-radius: 20px;
+    width: 2px;
+    user-select: none;
+
+}
+
+.message {
+    color: white;
+    padding-left: 0.3em;
+    line-height: 1.22em;
+    padding-top: 0.15vw;
+    font-size: 17.4px;
+    text-shadow:
+    -33px -33px 2 #000,
+    33px -33px 2 #000,
+    -33px 33px 2 #000,
+    33px 33px 2 #000;
+    font-weight: 1100;
+    user-select: none;
+}
+
+.inputBar {
+    background-color: rgba(0, 0, 0, 0.425);
+    color: white;
+    outline: none;
+    border-left: solid rgba(183, 119, 255, 0) 5px;
+    border-right:none;
+    border-top:none;
+    border-bottom:none;
+    width: 40em;
+    height: 3.42em;
+    /*padding: 0 0.5em 0 0.5em;*/
+    margin-top: 0.3em;
+
+}
+
+.inputBar::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    user-select: none;
+}
+
+.charCount {
+    color: white;
+    margin-left: 1em;
+    user-select: none;
+
+}
+
+.hide {
+    visibility: hidden;
+    user-select: none;
+    -webkit-animation: fadeout 2s;
+}
+
+.stroke {
+    text-shadow: 0 0 2px #000000, 0 0 6px #000000;
+}
+
+@keyframes fadeout {
+    from{opacity: 1;}
+    to{opacity: 0;}
+}
+
+@keyframes fadein {
+    from{opacity: 0;}
+    to{opacity: 1;}
+}

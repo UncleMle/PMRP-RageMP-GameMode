@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="styles.css">
+<html>
+<body>
+
+    <div style="padding: 5px">
+        <div id="progress-bar-wrapper">
+            <span id="text-content"></span>
+            <div id="bar"></div>
+        </div>
+    </div>
+
+    <script>
+        //document.getElementById('progress-bar-wrapper').style.animation = 'fadein 0.5s'
+        function runBar(s, task, direction, evt, params) {
+            var elem = document.getElementById('bar');
+            document.getElementById('text-content').innerHTML = task + '...';
+            var width = 0;
+            var interval = setInterval(frame, s*10);
+            function frame() {
+                if (width >= 100) {
+                    document.getElementById('progress-bar-wrapper').style.animation = 'fadeout 0.5s'
+                    setTimeout(() => {
+                        clearInterval(interval);
+                        mp.trigger('progress:end', direction, evt, params);
+                    }, 500);
+                } else {
+                    width++;
+                    /*
+                    if(width >= 20) {document.getElementById('bar').style.backgroundColor = '#dcabff';}
+                    if(width >= 30) {document.getElementById('bar').style.backgroundColor = '#cb82ff';}
+                    if(width >= 40) {document.getElementById('bar').style.backgroundColor = '#b752ff';}
+                    if(width >= 50) {document.getElementById('bar').style.backgroundColor = '#9e17ff';}
+                    if(width >= 60) {document.getElementById('bar').style.backgroundColor = '#c117ff';}
+                    if(width >= 70) {document.getElementById('bar').style.backgroundColor = '#f017ff';}
+                    if(width >= 80) {document.getElementById('bar').style.backgroundColor = '#ff17d1';}
+                    */
+                    elem.style.width = width + '%';
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>

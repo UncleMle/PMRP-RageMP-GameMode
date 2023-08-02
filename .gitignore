@@ -1,0 +1,21 @@
+/node_modules
+/dotnet
+/migrations
+/plugins
+/client_packages/game_resources
+/pmrp-frontend/node_modules
+/package-lock.json
+/BugTrap-x64.dll
+BugTrap-x64.dll
+/db backup
+/pmrp-ucp/client/node_modules
+/pmrp-ucp/server/node_modules
+/
+db backup
+*.exe
+*.cache
+*.dll
+*.exe
+*.pdb
+package-lock.json
+.eslintrc.js

@@ -1,0 +1,11 @@
+require('./coreApi.js');
+require('./core.js');
+require('./deathHandler.js');
+require('./timeWeather.js');
+require('./populatedAreas/populatedAreas.js');
+require('./parking.js');
+require('./blips.js');
+require('./insurance.js');
+require('./shops.js');
+require('./securedEvents.js');
+require('./compression.js');
