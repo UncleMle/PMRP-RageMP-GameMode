@@ -1,10 +1,7 @@
-const { Sequelize } = require("sequelize");
-
 module.exports = (sequelize, DataTypes) => {
     const Account = sequelize.define("Accounts", {
         uuid: {
-            type: Sequelize.UUID,
-            defaultValue: Sequelize.UUIDV4,
+            type: DataTypes.STRING('1234'),
             allowNull: false,
             validate: {
                 notEmpty: true
@@ -94,6 +91,13 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         },
+        adminDimension: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
+        },
         adminJailReason: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -142,14 +146,7 @@ module.exports = (sequelize, DataTypes) => {
             validate: {
                 notEmpty: true
             }
-        },
-        adminDimension: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
+        }
 
     })
 
