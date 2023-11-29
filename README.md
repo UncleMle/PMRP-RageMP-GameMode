@@ -16,7 +16,7 @@ To report a bug you can open an issue on the github repo <b>(bear in mind there 
 
 ### How to Install
 
-###### 1. First navigate to ``packages/config/config.json`` to edit your sequelize configuration. Enter your MySQL server credentials.
+###### 1. First navigate to ``packages/config/config.json`` to edit your sequelize configuration. Enter your MySQL server credentials under "development".
 ```typescript
 {
   "development": {
@@ -44,18 +44,30 @@ To report a bug you can open an issue on the github repo <b>(bear in mind there 
   }
 }
 ```
-###### 2. Acquire the RAGEMP server binary and place it in the root directory.
+
+###### 2. Head over to ``packages/CoreSystem/coreApi.js`` and change to your created SMTP email app (You must do this for the OTP authentication system to work and be able to register accounts).
+
+````typescript
+const email = ""
+const emailPassword = ""
+````
+
+Good Tutorial https://www.youtube.com/watch?v=yuOK6D7deTo
+
+###### 3. Acquire the RAGEMP server binary and place it in the root directory.
 <img src="https://i.imgur.com/dQudDwL.png">
 
-###### 3. You should now be able to run the .exe file and start the gamemode.
+###### 4. You should now be able to run the .exe file and start the gamemode.
 
 # Misc
 
-This gamemode also comes with a UCP and discord intergration which can both be ran seperatetly from the main game server.
+This gamemode also comes with a UCP and discord intergration which can both be ran separately from the main game server.
 
-Discord Intergration: ``packages/discord``
+Discord Intergration: ``packages\discord``
 
 Web Panel: ``pmrp-ucp\client``
+
+To edit the UI you must run the VueJS dev server (located in ``pmrp-frontend\``) once your changes are made simply build the UI with npm run build and drag the contents of ``pmrp-frontend\build`` in the folder ``client_packages\cefs``. 
 
 # In game images
 <img src="https://i.imgur.com/3VpzVNH.png">
