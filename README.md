@@ -2,6 +2,13 @@
 
 Created using NodeJS, Sequelize, VueJS and Express.
 
+### Contact
+
+You can contact me at 
+
+-Discord unclemole <br>
+-Gamemodes discord server https://discord.gg/6WKZt68qJT
+
 ### How to Install
 
 ###### 1. First navigate to ``packages/config/config.json`` to edit your sequelize configuration. Enter your MySQL server credentials.
