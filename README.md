@@ -9,6 +9,11 @@ You can contact me at
 -Discord unclemole <br>
 -Gamemodes discord server https://discord.gg/6WKZt68qJT
 
+### Contributing and bug reporting
+
+To contribute please contact me on my discord ``unclemole`` and include why you wish to contribute. <br>
+To report a bug you can open an issue on the github repo <b>(bear in mind there is no licensing with this software and it is free to use).</b>
+
 ### How to Install
 
 ###### 1. First navigate to ``packages/config/config.json`` to edit your sequelize configuration. Enter your MySQL server credentials.
