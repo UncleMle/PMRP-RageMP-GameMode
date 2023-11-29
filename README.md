@@ -14,6 +14,48 @@ You can contact me at
 To contribute please contact me on my discord ``unclemole`` and include why you wish to contribute. <br>
 To report a bug you can open an issue on the github repo <b>(bear in mind there is no licensing with this software and it is free to use).</b>
 
+### Features
+
+* Fully synced vehicle systems (sirens, interactions, WI menu, Dirt, fuel, indicators, stalling system, tyres, windows, distance calculation)
+
+* Character creation system
+
+* Nickname system
+
+* Full admin system
+
+* Custom chat system
+
+* Authentication and ban system with OTP emailing
+
+* Custom death and injury system
+
+* Nametagging system
+
+* VOIP system
+
+* Weapon display system
+
+* Custom clothing system with clothing shops
+
+* Custom door control
+
+* Trucker Job & Bus job
+
+* Banking system with ATMs and Bank Deposit and withdrawl.
+
+* Player Phone system
+
+* UCP (user control panel)
+
+* Parking System
+
+* Insurance System
+
+* Faction System
+
+* Anti Cheat
+
 ### How to Install
 
 ###### 1. First navigate to ``packages/config/config.json`` to edit your sequelize configuration. Enter your MySQL server credentials under "development".
