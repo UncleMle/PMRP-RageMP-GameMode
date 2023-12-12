@@ -7,5 +7,4 @@ require('./parking.js');
 require('./blips.js');
 require('./insurance.js');
 require('./shops.js');
-require('./securedEvents.js');
 require('./compression.js');

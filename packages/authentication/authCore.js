@@ -557,8 +557,7 @@ async function finalRegisterInitilzation(player) {
               var currentNotifs = JSON.parse(account[0].notifications);
               currentNotifs.push("Someone used your referral code and gained you 200 credits!");
               db.Accounts.update({
-                credits: (account[0].credits + 200),
-                notifications: JSON.stringify(currentNotifs)
+                credits: (account[0].credits + 200)
               }, { where: {id: acc[0].accountId} });
               db.account_referrals.update({
                 uses: (acc[0].uses + 1)

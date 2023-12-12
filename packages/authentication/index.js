@@ -1,5 +1,4 @@
-require('./database.js')
-require('./logging.js')
+require('./database.js');
 
 const consoleColours = require('@jshor/colors');
 

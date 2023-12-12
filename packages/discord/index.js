@@ -1,0 +1,1 @@
+console.log("Discord should be ran seperately from the server.");
