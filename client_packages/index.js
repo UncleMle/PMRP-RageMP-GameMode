@@ -5,7 +5,6 @@ require('./chatSystem/index.js');
 require('./jobs/trucker.js');
 require('./anticheat/index.js');
 require('./attach_editor/attach.js');
-require('./browsers/browserManager.js');
 require('./browsers/browserSystem.js');
 require('./doors/doorControl.js');
 require('./fly/fly.js');
@@ -46,7 +45,6 @@ require('./voip/voiceChat.js');
 require('./clothing/playerClothing.js')
 require('./weapondisplay/index.js');
 require('./weapondisplay/components.js');
-require("interior-browser");
 require('scaleform_messages/messages.js');
 require('./factions/customs.js')
 require('./admin/adminEsp.js');
