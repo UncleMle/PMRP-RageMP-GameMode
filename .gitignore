@@ -19,3 +19,4 @@ db backup
 *.pdb
 package-lock.json
 .eslintrc.js
+/bin
