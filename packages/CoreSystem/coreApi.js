@@ -181,20 +181,6 @@ class coreApi {
                 })
             },
 
-            addNotification: async (accsqlid, notif) => {
-                db.Accounts.findAll({ where: { id: accsqlid } }).then((account) => {
-                    if (account.length > 0) {
-                        var currentNotifs = account[0].notifications;
-                        currentNotifs.length == 0 || currentNotifs == "[]" ? currentNotifs = [] : "";
-
-                        currentNotifs.push(notif);
-                        db.Accounts.update({
-                            notifications: currentNotifs
-                        }, { where: { id: accsqlid } }).catch((err) => {mp.log(err)})
-                    }
-                })
-            },
-
             updatePlayerMoney: async(player, type, amount) => {
                 if(!player.getVariable('loggedIn')) return;
                 switch(type) {

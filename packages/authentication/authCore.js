@@ -325,9 +325,6 @@ mp.events.add({
     if(player.sqlID) {
       db.Accounts.findAll({ where: player.sqlID }).then((acc) => {
         if(acc.length > 0) {
-          var currentNotifs = acc[0].notifications;
-          currentNotifs.splice(index, 1);
-          db.Accounts.update({ notifications: currentNotifs == null || currentNotifs.length == 0 ? "[]" : currentNotifs }, { where: {id: player.sqlID} }).catch((err) => {mp.log(err)});
           player.call('requestBrowser', [`gui.notify.clearAll()`]);
           player.call('requestBrowser', [`gui.notify.showNotification("Cleared Notification.", false, true, 5000, 'fa-sharp fa-solid fa-circle-check')`]);
         }
@@ -554,8 +551,6 @@ async function finalRegisterInitilzation(player) {
         if(acc.length > 0) {
           db.Accounts.findAll({ where: {id: acc[0].accountId} }).then((account) => {
             if(account.length > 0) {
-              var currentNotifs = JSON.parse(account[0].notifications);
-              currentNotifs.push("Someone used your referral code and gained you 200 credits!");
               db.Accounts.update({
                 credits: (account[0].credits + 200)
               }, { where: {id: acc[0].accountId} });
@@ -722,15 +717,6 @@ async function loadAccount(player, username) {
         player.setVariable('username', username);
         player.setVariable('adminLevel', rows[0].adminStatus);
         player.cheatViolations = [];
-      }
-
-      if(rows[0].notifications != "[]" && rows[0].notifications.length > 0) {
-        rows[0].notifications.forEach((item, i) => {
-          player.call('requestBrowser', [`appSys.commit('addSelectNotif', {
-            id: ${i},
-            text: "${item}"
-            })`])
-        })
       }
 
       db.characters.findAll({

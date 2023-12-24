@@ -70,13 +70,6 @@ class vehDatabase {
                                     ps.outputChatBox(`!{#e993a0}[Vehicle Insurance]!{white} Your Vehicle ${ve[0].vehicleModelName} [${ve[0].numberPlate}] has been destroyed. You can pick it up from any insurance company for a retrieval fee.`);
                                 }
                             })
-                            if(!foundP) {
-                                db.characters.findAll({ where: {id: ve[0].OwnerId} }).then(char => {
-                                    if(char.length > 0) {
-                                        mp.core.addNotification(ve[0].OwnerId, `${char[0].cName}'s ${ve[0].vehicleModelName} [${ve[0].numberPlate}] was destroyed and sent to insurance`);
-                                    }
-                                })
-                            }
                         }
                     })
                 }

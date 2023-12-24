@@ -57,7 +57,6 @@ mp.events.add({
                         moneyAmount: char[0].moneyAmount + parseInt(Math.floor(data.moneyEntered/interest))
                     }, { where: {id: char[0].id} }).catch(err => mp.log(err));
 
-                    mp.core.addNotification(char[0].id, `${player.characterName} transferred $${parseInt(data.moneyEntered).toLocaleString('en-US')} to ${char[0].cName}`);
                     mp.core.addBankingLog(player.characterId, 'Cash Send', 0, parseInt(data.moneyEntered));
                     mp.core.addBankingLog(char[0].id, 'Cash Send', 1, parseInt(Math.floor(data.moneyEntered/interest)));
 

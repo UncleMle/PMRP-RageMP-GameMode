@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "%e58s6LodGMl",
+    "password": "examplepassword",
     "database": "pmrp_db",
     "host": "127.0.0.1",
     "dialect": "mysql",

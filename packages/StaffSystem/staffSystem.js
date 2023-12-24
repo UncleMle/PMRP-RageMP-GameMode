@@ -1083,7 +1083,6 @@ mp.cmds.add(['setarmour'], (player, fullText, id, ...amount) => {
         if(player.adminDuty || player.isAdmin > 7) {
             var targetPlayer = mp.core.idOrName(player, id);
             if(targetPlayer) {
-                mp.core.addNotification(targetPlayer.sqlID, `Warn from Admin ${player.adminName} reason: ${message.join(' ')}`);
                 mp.chat.aPush(player, `You warned ${targetPlayer.characterName} with reason ${message.join(' ')}`), mp.chat.aPush(player, `You were warned by ${player.adminName} with reason ${message.join(' ')}`) ;
                 mp.core.addAdminPunishment(player, targetPlayer, 'WARN', `${message.join(' ')}`, 0);
                 return;
