@@ -19,12 +19,17 @@ mp.events.add({
     mp.log(`${CONFIG.consoleYellow}[INCOMING]${CONFIG.consoleWhite} Player with IP: ${ip} RGSCNAME: ${rgscName} GAMETYPE: ${gameType}`)
   },
   playerJoin: async (player) => {
+    let calledTimes = 0;
+
     const callProc = async (player, proc) => {
       try {
         const Res = await player.callProc(proc);
         return Res;
       } catch (err) {
-        return await callProc(player, proc);
+        if(calledTimes < 3) {
+          calledTimes++;
+          return await callProc(player, proc);
+        }
       }
     };
     const uuvid = await callProc(player, 'get:uuvid')
