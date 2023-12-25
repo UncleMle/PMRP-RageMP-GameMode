@@ -48,6 +48,9 @@ mp.cmds.add(['dc', 'disconnect'], (player, arg) => {
     }
     new aliasSystem()
   }),
+  mp.cmds.add(["help"], (player) => {
+    mp.cmds.getCmds(player);
+  });
   mp.cmds.add(['removealias', 'removenick'], (player, target) => {
     if (!target) return mp.chat.info(player, 'Use: /removenick [id]')
     mp.players.forEachInRange(player.position, 50,

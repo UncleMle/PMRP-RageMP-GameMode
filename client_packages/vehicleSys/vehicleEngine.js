@@ -89,17 +89,19 @@ mp.keys.bind(89, false, async function () {
             return
         }
         if (mp.players.local.getVariable('injured') || mp.players.local.getVariable('carryInfo')) { return }
-        setTimeout(async () => {
-            if (!mp.players.local.vehicle) return;
-            // Totalled vehicle
-            if (mp.players.local.vehicle.getVariable('isStalled')) { return mp.events.call('notifCreate', '~w~Vehicle is ~r~stalled~w~ due to damage try again.') }
-            if (Math.floor(Math.trunc(mp.players.local.vehicle.getBodyHealth() / 10)) < 15) {
-                return mp.events.call('requestBrowser', `gui.notify.showNotification("This vehicle is completely broken down call LSC for assistance", false, true, 7000, 'fa-solid fa-triangle-exclamation')`)
-            }
-            mp.events.call('ameCreate', `Starts the ${getVehName(mp.players.local.vehicle.model)}'s engine.`);
-            mp.events.callRemote('engine:start');
-        }, 1500);
+
         mp.events.call('ameCreate', `Attempts to start the ${getVehName(mp.players.local.vehicle.model)}'s engine.`);
+
+        await mp.game.waitAsync(1500);
+
+        if (!mp.players.local.vehicle) return;
+        // Totalled vehicle
+        if (mp.players.local.vehicle.getVariable('isStalled')) { return mp.events.call('notifCreate', '~w~Vehicle is ~r~stalled~w~ due to damage try again.') }
+        if (Math.floor(Math.trunc(mp.players.local.vehicle.getBodyHealth() / 10)) < 15) {
+            return mp.events.call('requestBrowser', `gui.notify.showNotification("This vehicle is completely broken down call LSC for assistance", false, true, 7000, 'fa-solid fa-triangle-exclamation')`)
+        }
+        mp.events.call('ameCreate', `Starts the ${getVehName(mp.players.local.vehicle.model)}'s engine.`);
+        mp.events.callRemote('engine:start');
 
     }
     if (mp.players.local.vehicle.getVariable('engineStatus') && mp.players.local.vehicle.getPedInSeat(-1) === mp.players.local.handle) {
