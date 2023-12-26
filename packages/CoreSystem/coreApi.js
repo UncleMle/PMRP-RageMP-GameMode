@@ -25,13 +25,8 @@ class coreApi {
                     mp.events.addCommand(data.toUpperCase(), callback);
                 })
             },
-            getCmds: (player) => {
-                player.call('listMenu:show')
-                var num = 0;
-                this.count.forEach(element => {
-                    num++;
-                    player.call('helpMenu:add', [num, '/' + element]);
-                })
+            getCmds: () => {
+                return this.count;
             }
         }
 

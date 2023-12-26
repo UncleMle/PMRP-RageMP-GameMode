@@ -28,9 +28,9 @@ class nametagSys {
 					mp.events.callRemote("requestNickName", entity);
 					mp.events.callRemote("player:setClothing", entity);
 
-          await mp.game.waitSync(500);
+					await mp.game.waitAsync(150);
 
-          mp.events.callRemote("player:setModel", entity);
+					mp.events.callRemote("player:setModel", entity);
 				}
 				if (mp.players.local.getVariable("devdebug") == true) {
 					mp.gui.chat.push(
@@ -241,14 +241,22 @@ class nametagSys {
 				});
 			},
 			ameCreate: (message) => {
-				if ((ameTimer || this.ameNot) != null) {
+
+				(this.opacity = 255), (this.x = 0.5), (this.scale = 0.55);
+				mp.players.local.ameMsg = null;
+				mp.players.local.notifMsg = null;
+				mp.events.callRemote("ameMsg", null);
+
+				if(ameTimer) {
 					clearInterval(ameTimer);
-					clearInterval(this.ameNot);
-					(this.opacity = 255), (this.x = 0.5), (this.scale = 0.55);
-					mp.players.local.ameMsg = null;
-					mp.players.local.notifMsg = null;
-					mp.events.callRemote("ameMsg", null);
+					ameTimer = undefined;
 				}
+
+				if(this.ameNot) {
+					clearInterval(this.ameNot);
+					this.ameNot = undefined;
+				}
+
 				var ameText = "* " + message.toString().replace(/~/, "") + " *";
 				mp.players.local.ameMsg = ameText;
 				mp.events.callRemote("ameMsg", ameText);
@@ -267,7 +275,11 @@ class nametagSys {
 
 					if (this.x > 0.62) {
 						mp.players.local.ameMsg = null;
-						clearInterval(this.ameNot);
+
+						if(this.ameNot) {
+							clearInterval(this.ameNot);
+							this.ameNot = undefined;
+						}
 					}
 					this.opacity = this.opacity - 1;
 					this.x = this.x + 0.0005;
@@ -275,22 +287,21 @@ class nametagSys {
 				}, 10);
 			},
 			notifCreate: (message) => {
-				if ((ameTimer || this.ameNot) !== undefined) {
 
-          if(ameTimer) {
-            clearInterval(ameTimer);
-            ameTimer = undefined;
-          }
-
-          if(this.ameNot) {
-            clearInterval(this.ameNot);
-            this.ameNot = undefined;
-          }
-
-					(this.opacity = 255), (this.x = 0.5), (this.scale = 0.55);
-					mp.players.local.ameMsg = null;
-					mp.players.local.notifMsg = null;
+				if (ameTimer) {
+					clearInterval(ameTimer);
+					ameTimer = undefined;
 				}
+
+				if (this.ameNot) {
+					clearInterval(this.ameNot);
+					this.ameNot = undefined;
+				}
+
+				(this.opacity = 255), (this.x = 0.5), (this.scale = 0.55);
+				mp.players.local.ameMsg = null;
+				mp.players.local.notifMsg = null;
+
 				var notifTxt = message;
 				mp.players.local.notifMsg = notifTxt;
 
@@ -306,9 +317,10 @@ class nametagSys {
 					if (this.x > 0.62) {
 						mp.players.local.notifMsg = null;
 
-            if(this.ameNot) {
-              clearInterval(this.ameNot);
-            }
+						if (this.ameNot) {
+							clearInterval(this.ameNot);
+							this.ameNot = undefined;
+						}
 					}
 
 					this.opacity = this.opacity - 1;
