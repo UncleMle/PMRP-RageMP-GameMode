@@ -4,7 +4,7 @@ Created using NodeJS, Sequelize, VueJS and Express.
 
 ### Contact
 
-You can contact me at 
+You can contact me at
 
 -Discord unclemole <br>
 -Gamemodes discord server https://discord.gg/6WKZt68qJT
@@ -12,9 +12,11 @@ You can contact me at
 ### Contributing and bug reporting
 
 To contribute please contact me on my discord ``unclemole`` and include why you wish to contribute. <br>
-To report a bug you can open an issue on the github repo <b>(bear in mind there is no licensing with this software and it is free to use).</b>
+To report a bug you can open an issue on the github repo (Don't contact me on discord about any bugs.) <b>(bear in mind there is no licensing with this software and it is free to use).</b>
 
 ### Features
+
+## I will not be adding more features to this gamemode. If you want a feature you will have to add it yourself.
 
 * Fully synced vehicle systems (sirens, interactions, WI menu, Dirt, fuel, indicators, stalling system, tyres, windows, distance calculation)
 
@@ -99,7 +101,9 @@ Good Tutorial https://www.youtube.com/watch?v=yuOK6D7deTo
 ###### 3. Acquire the RAGEMP server binary and place it in the root directory.
 <img src="https://i.imgur.com/dQudDwL.png">
 
-###### 4. You should now be able to run the .exe file and start the gamemode.
+###### 4. Head to the root directory in your terminal of choice and enter ``npm i`` to install dependencies.
+
+###### 5. You should now be able to run the .exe file and start the gamemode.
 
 # Misc
 
@@ -109,7 +113,7 @@ Discord Intergration: ``packages\discord``
 
 Web Panel: ``pmrp-ucp\client``
 
-To edit the UI you must run the VueJS dev server (located in ``pmrp-frontend\``) once your changes are made simply build the UI with npm run build and drag the contents of ``pmrp-frontend\build`` in the folder ``client_packages\cefs``. 
+To edit the UI you must run the VueJS dev server (located in ``pmrp-frontend\``) once your changes are made simply build the UI with npm run build and drag the contents of ``pmrp-frontend\build`` in the folder ``client_packages\cefs``.
 
 # In game images
 <img src="https://i.imgur.com/3VpzVNH.png">
