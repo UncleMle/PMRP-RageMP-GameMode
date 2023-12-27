@@ -14,6 +14,16 @@ You can contact me at
 To contribute please contact me on my discord ``unclemole`` and include why you wish to contribute. <br>
 To report a bug you can open an issue on the github repo (Don't contact me on discord about any bugs.) <b>(bear in mind there is no licensing with this software and it is free to use).</b>
 
+### Features not implemented or full completed yet.
+
+* Full inventory system.
+
+* Being able to call / message through the phone (Only the UI for it is finished).
+
+* Player factions.
+
+* Some of the other players jobs.
+
 ### Features
 
 ## I will not be adding more features to this gamemode. If you want a feature you will have to add it yourself.
