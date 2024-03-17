@@ -93,7 +93,9 @@ Good Tutorial https://www.youtube.com/watch?v=yuOK6D7deTo
 
 ###### 4. Head to the root directory in your terminal of choice and enter ``npm i`` to install dependencies.
 
-###### 5. You should now be able to run the .exe file and start the gamemode.
+###### 5. Rename the ``.env.example`` to ``.env``
+
+###### 6. You should now be able to run the .exe file and start the gamemode.
 
 # Misc
 
