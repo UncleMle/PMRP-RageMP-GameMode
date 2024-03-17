@@ -6,9 +6,10 @@ const nodemailer = require('nodemailer');
 const db = require('../models');
 const LZString = require('./compression.js');
 const consoleColours = require('@jshor/colors');
+require("dotenv").config();
 
-const email = "";
-const emailPassword = "";
+const email = process.env.NODEMAILER_EMAIL;
+const emailPassword = process.env.NODEMAILER_PASSWORD;
 
 class coreApi {
     constructor() {
