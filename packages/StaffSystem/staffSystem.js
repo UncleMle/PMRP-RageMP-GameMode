@@ -38,30 +38,6 @@ mp.cmds.add(['ainfo'], async (player, id) => {
     }
     mp.chat.err(player, `${CONFIG.noauth}`);
 }),
-
-mp.cmds.add(['callapi'], async(player, call) => {
-    if(!call) return mp.chat.info(player, `Use: /callapi [endpoint]`);
-    if(player.isAdmin > 7) {
-        try {
-            fetch(`http://localhost:8081/${call}`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    apiKey: "test",
-                    value: player.adminName,
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-            })
-            .then(resp => resp.json())
-            .then(json => {
-                mp.chat.aPush(player, `${json}`);
-            })
-            return;
-        } catch(e) { mp.log(e) }
-    }
-    mp.chat.err(player, `${CONFIG.noauth}`);
-})
     mp.cmds.add(['aid', 'adminid'], async (player, id) => {
         if (id == null) return mp.chat.info(player, `Use: /adminid [Name/ID]`)
         if (player.isAdmin > 2) {
@@ -340,7 +316,7 @@ mp.cmds.add(['closereport', 'cr'], async (player, arg) => {
             }
             var fullReason = reason.join(' ')
             var targetPlayer = mp.core.idOrName(player, target);
-            if(!targetPlayer) return mp.chat.err(player, `Player wasn't found`);
+            if (!targetPlayer) return mp.chat.err(player, `Player wasn't found`);
             var times = getUnixTimestamp() + (minutes * 60);
             if (minutes == Number(-1)) {
                 times = -1;
@@ -596,55 +572,55 @@ mp.cmds.add(['rmc'], (player, arg) => {
                 veh.setColor(parseInt(colourOne), parseInt(colourTwo));
                 db.vehicles.update({
                     numberPlate: numPlate
-                }, { where: { id: car.id } }).then(() => { mp.log(`${CONFIG.consoleRed}[ADMIN]${CONFIG.consoleWhite} ${player.adminName} spawned in a ${vehicle} SQLID: ${veh.getVariable('sqlID')}`), mp.chat.aPush(player, `You spawned in a ${vehicleName} with SQLID: ${car.id}`)})
+                }, { where: { id: car.id } }).then(() => { mp.log(`${CONFIG.consoleRed}[ADMIN]${CONFIG.consoleWhite} ${player.adminName} spawned in a ${vehicle} SQLID: ${veh.getVariable('sqlID')}`), mp.chat.aPush(player, `You spawned in a ${vehicleName} with SQLID: ${car.id}`) })
             })
             return
         }
         mp.chat.err(player, `${CONFIG.noauth}`);
     }),
     mp.cmds.add(['vhealth'], (player, set) => {
-        if(!set || !player.vehicle || !(set >= 0 && set <= 1000)) return mp.chat.info(player, `Use: /vhealth [health(0-1000)]`);
-        if((player.isAdmin > 7  || player.adminDuty && player.isAdmin > 4) && player.vehicle.getVariable('sqlID')) {
+        if (!set || !player.vehicle || !(set >= 0 && set <= 1000)) return mp.chat.info(player, `Use: /vhealth [health(0-1000)]`);
+        if ((player.isAdmin > 7 || player.adminDuty && player.isAdmin > 4) && player.vehicle.getVariable('sqlID')) {
             var currentData = JSON.parse(player.vehicle.getVariable('vehData'));
             currentData.Health = set;
-            db.vehicles.update({ data: JSON.stringify(currentData) }, { where: {id: player.vehicle.getVariable('sqlID')} });
+            db.vehicles.update({ data: JSON.stringify(currentData) }, { where: { id: player.vehicle.getVariable('sqlID') } });
             player.vehicle.setVariable('vehDamage', set);
             mp.chat.aPush(player, `You set health of vehicle with SQLID: ${player.vehicle.getVariable('sqlID')} [${player.vehicle.numberPlate}] to ${set}%`);
             return;
         }
         mp.chat.err(player, `${CONFIG.noauth}`);
     })
-    mp.cmds.add(['freeze'], (player, id) => {
-        if (id == null) return mp.chat.info(player, `Use: /freeze [Name/ID]`)
-        if (player.adminDuty || player.isAdmin > 7) {
-            var targetPlayer = mp.core.idOrName(player, id)
-            if (targetPlayer) {
-                targetPlayer.call('freezePlayer');
-                mp.chat.aPush(targetPlayer, `You were frozen by !{orange}${player.adminName}`);
-                mp.chat.aPush(player, `You have frozen !{#b1a1ff}${targetPlayer.characterName}`);
-                targetPlayer.call('notifCreate', [`~r~You were frozen by ~p~${player.adminName}`])
-                player.call('notifCreate', [`~r~You froze ~p~${targetPlayer.characterName}`])
-            }
-            else { mp.chat.err(player, `No player could be found.`) }
-            return
-        }
-        mp.chat.err(player, `${CONFIG.noauth}`)
-    }),
-mp.cmds.add(['unfreeze'], (player, id) => {
-    if (id == null) return mp.chat.info(player, `Use: /unfreeze [Name/ID]`);
+mp.cmds.add(['freeze'], (player, id) => {
+    if (id == null) return mp.chat.info(player, `Use: /freeze [Name/ID]`)
     if (player.adminDuty || player.isAdmin > 7) {
-        var targetP = mp.core.idOrName(player, id)
-        if (targetP) {
-            targetP.call('unfreezePlayer');
-            mp.chat.aPush(targetP, `You were unfrozen by !{orange}${player.adminName}`);
-            targetP.call('notifCreate', [`~r~You were unfrozen by ~p~${player.adminName}`])
-            player.call('notifCreate', [`~r~You unfroze ~p~${targetP.characterName}`])
-            mp.chat.aPush(player, `You have unfrozen !{#b1a1ff}${targetP.characterName}`)
+        var targetPlayer = mp.core.idOrName(player, id)
+        if (targetPlayer) {
+            targetPlayer.call('freezePlayer');
+            mp.chat.aPush(targetPlayer, `You were frozen by !{orange}${player.adminName}`);
+            mp.chat.aPush(player, `You have frozen !{#b1a1ff}${targetPlayer.characterName}`);
+            targetPlayer.call('notifCreate', [`~r~You were frozen by ~p~${player.adminName}`])
+            player.call('notifCreate', [`~r~You froze ~p~${targetPlayer.characterName}`])
         }
         else { mp.chat.err(player, `No player could be found.`) }
+        return
     }
     mp.chat.err(player, `${CONFIG.noauth}`)
 }),
+    mp.cmds.add(['unfreeze'], (player, id) => {
+        if (id == null) return mp.chat.info(player, `Use: /unfreeze [Name/ID]`);
+        if (player.adminDuty || player.isAdmin > 7) {
+            var targetP = mp.core.idOrName(player, id)
+            if (targetP) {
+                targetP.call('unfreezePlayer');
+                mp.chat.aPush(targetP, `You were unfrozen by !{orange}${player.adminName}`);
+                targetP.call('notifCreate', [`~r~You were unfrozen by ~p~${player.adminName}`])
+                player.call('notifCreate', [`~r~You unfroze ~p~${targetP.characterName}`])
+                mp.chat.aPush(player, `You have unfrozen !{#b1a1ff}${targetP.characterName}`)
+            }
+            else { mp.chat.err(player, `No player could be found.`) }
+        }
+        mp.chat.err(player, `${CONFIG.noauth}`)
+    }),
     mp.cmds.add(['bring', 'teleport'], (player, id) => {
         if (id == null) return mp.chat.info(player, `Use: /bring [Name/ID]`)
         if (player.adminDuty || player.isAdmin > 7) {
@@ -958,10 +934,10 @@ mp.cmds.add(['checkn'], async (player, name) => {
                     currentData.health = 1000;
                     var currentTyres = veh.getVariable('currentTyres');
                     currentTyres = JSON.parse(currentTyres);
-                    for(var x = 0; x < currentTyres.length; x++) {
+                    for (var x = 0; x < currentTyres.length; x++) {
                         currentTyres[x] = false;
                     }
-                    db.vehicles.update({ data: JSON.stringify(currentData),  tyreStatus: JSON.stringify(currentTyres) }, { where: {id: veh.getVariable('sqlID')} })
+                    db.vehicles.update({ data: JSON.stringify(currentData), tyreStatus: JSON.stringify(currentTyres) }, { where: { id: veh.getVariable('sqlID') } })
                     const vehicleName = await player.callProc('proc::vehicleName', [veh.model]);
                     mp.chat.aPush(player, ` repaired vehicle ${vehicleName} !{#919191}${veh.numberPlate}!`);
                     veh.setVariable('vehData', JSON.stringify(currentData));
@@ -1078,12 +1054,12 @@ mp.cmds.add(['setarmour'], (player, fullText, id, ...amount) => {
         }
         mp.chat.err(player, `${CONFIG.noauth}`)
     }),
-    mp.cmds.add(['warn'], async(player, fullText, id, ...message) => {
-        if(!id || !message || message.length == 0) return mp.chat.info(player, `Use: /warn [Name/ID] [message]`);
-        if(player.adminDuty || player.isAdmin > 7) {
+    mp.cmds.add(['warn'], async (player, fullText, id, ...message) => {
+        if (!id || !message || message.length == 0) return mp.chat.info(player, `Use: /warn [Name/ID] [message]`);
+        if (player.adminDuty || player.isAdmin > 7) {
             var targetPlayer = mp.core.idOrName(player, id);
-            if(targetPlayer) {
-                mp.chat.aPush(player, `You warned ${targetPlayer.characterName} with reason ${message.join(' ')}`), mp.chat.aPush(player, `You were warned by ${player.adminName} with reason ${message.join(' ')}`) ;
+            if (targetPlayer) {
+                mp.chat.aPush(player, `You warned ${targetPlayer.characterName} with reason ${message.join(' ')}`), mp.chat.aPush(player, `You were warned by ${player.adminName} with reason ${message.join(' ')}`);
                 mp.core.addAdminPunishment(player, targetPlayer, 'WARN', `${message.join(' ')}`, 0);
                 return;
             } else {
@@ -1091,32 +1067,32 @@ mp.cmds.add(['setarmour'], (player, fullText, id, ...amount) => {
             }
         }
     })
-    mp.cmds.add(['revive', 'rev'], (player, id) => {
-        if (!id) return mp.chat.info(player, `Use: /revive [Name/ID]`);
-        if (player.adminDuty || player.isAdmin > 7) {
-            var target = mp.core.idOrName(player, id)
-            if (target) {
-                target.setVariable('injured', false);
-                target.stopAnimation();
-                target.call('unfreezePlayer');
-                target.call('endDeath');
-                target.health = 100;
-                const { characters } = require("../models");
-                characters.update({
-                    isInjured: 0,
-                    injuredTime: 0,
-                }, { where: { id: target.characterId } })
-                target.call('notifCreate', [`~r~You were revived by ~p~${player.adminName}`])
-                player.call('notifCreate', [`~r~You revived ~p~${target.characterName}`])
-                if (target.respawner) { clearTimeout(target.respawner) }
-                mp.chat.aPush(player, `You have revived ${target.characterName} [${target.id}]`);
-                mp.chat.aPush(target, `You have been revived by ${player.adminName}`);
-            }
-            else { mp.chat.err(player, `No player was found.`) }
-            return
+mp.cmds.add(['revive', 'rev'], (player, id) => {
+    if (!id) return mp.chat.info(player, `Use: /revive [Name/ID]`);
+    if (player.adminDuty || player.isAdmin > 7) {
+        var target = mp.core.idOrName(player, id)
+        if (target) {
+            target.setVariable('injured', false);
+            target.stopAnimation();
+            target.call('unfreezePlayer');
+            target.call('endDeath');
+            target.health = 100;
+            const { characters } = require("../models");
+            characters.update({
+                isInjured: 0,
+                injuredTime: 0,
+            }, { where: { id: target.characterId } })
+            target.call('notifCreate', [`~r~You were revived by ~p~${player.adminName}`])
+            player.call('notifCreate', [`~r~You revived ~p~${target.characterName}`])
+            if (target.respawner) { clearTimeout(target.respawner) }
+            mp.chat.aPush(player, `You have revived ${target.characterName} [${target.id}]`);
+            mp.chat.aPush(target, `You have been revived by ${player.adminName}`);
         }
-        mp.chat.err(player, `${CONFIG.noauth}`)
-    }),
+        else { mp.chat.err(player, `No player was found.`) }
+        return
+    }
+    mp.chat.err(player, `${CONFIG.noauth}`)
+}),
     mp.cmds.add(['gotov', 'gtv'], async (player, target) => {
         class gotoV {
             constructor() {
@@ -1133,7 +1109,7 @@ mp.cmds.add(['setarmour'], (player, fullText, id, ...amount) => {
                                     resolve();
                                 }).then(() => {
                                     setTimeout(() => {
-                                        if(!veh || !player) return;
+                                        if (!veh || !player) return;
                                         player.putIntoVehicle(veh, 0);
                                     }, 200);
                                     mp.chat.aPush(player, `You teleported to vehicle with SQLID: ${veh.getVariable('sqlID')}`)
@@ -1142,7 +1118,7 @@ mp.cmds.add(['setarmour'], (player, fullText, id, ...amount) => {
                             }
                         })
 
-                        if(!foundV) return mp.chat.err(player, `No vehicle with that SQLID was found spawned.`);
+                        if (!foundV) return mp.chat.err(player, `No vehicle with that SQLID was found spawned.`);
                     }
                     return
                 }
@@ -1288,22 +1264,22 @@ mp.cmds.add(['slay'], (player, id) => {
 }),
     mp.cmds.add(['setvplate'], async (player, fullText, sqlid, ...plate) => {
         if (player.isAdmin > 7) {
-            if(sqlid == null) {
-                if(player.vehicle && player.vehicle.getVariable('sqlID')) {
+            if (sqlid == null) {
+                if (player.vehicle && player.vehicle.getVariable('sqlID')) {
                     sqlid = player.vehicle.getVariable('sqlID')
-                    if(plate.length == 0) return mp.chat.info(player, `Use: /setvplate [Current Vehicle / SQLID] [plate]`);
+                    if (plate.length == 0) return mp.chat.info(player, `Use: /setvplate [Current Vehicle / SQLID] [plate]`);
                 }
                 else return mp.chat.info(player, `Use: /setvplate [Current Vehicle / SQLID] [plate]`)
             }
 
-            db.vehicles.findAll({ where: {id: sqlid} }).then((vehicle) => {
-                if(vehicle.length > 0) {
+            db.vehicles.findAll({ where: { id: sqlid } }).then((vehicle) => {
+                if (vehicle.length > 0) {
                     db.vehicles.update({
                         numberPlate: plate.join('_')
-                    }, { where: {id: sqlid} }).then(() => {
-                        mp.vehicles.forEach((veh) => {if(veh.getVariable('sqlID') == sqlid) { veh.numberPlate = plate.join('_'); }})
+                    }, { where: { id: sqlid } }).then(() => {
+                        mp.vehicles.forEach((veh) => { if (veh.getVariable('sqlID') == sqlid) { veh.numberPlate = plate.join('_'); } })
                         mp.chat.aPush(player, `Updated number plate to ${plate.join('_')} for vehicle with sqlid: ${sqlid}`)
-                    }).catch((err) => {mp.log(err)})
+                    }).catch((err) => { mp.log(err) })
                     return;
                 }
                 else return mp.chat.err(player, `No vehicle with that SQLID was found.`)
@@ -1365,16 +1341,16 @@ mp.cmds.add(['slay'], (player, id) => {
         }
         mp.chat.err(player, `${CONFIG.noauth}`)
     }),
-    mp.cmds.add(['telm', 'tptowp'], async(player, arg) => {
+    mp.cmds.add(['telm', 'tptowp'], async (player, arg) => {
         if (arg != undefined || arg != null) return mp.chat.info(player, `Use: /telm`)
         if (player.adminDuty || player.isAdmin > 7) {
-            new Promise(async(resolve, reject) => {
+            new Promise(async (resolve, reject) => {
                 let targetVeh = null;
-                if(player.vehicle) {
+                if (player.vehicle) {
                     targetVeh = player.vehicle;
                     player.call('TELEPORTWAY');
                     setTimeout(() => {
-                        if(!player || !targetVeh) return;
+                        if (!player || !targetVeh) return;
                         targetVeh.position = player.position;
                         setTimeout(() => {
                             player.putIntoVehicle(targetVeh, 0);
@@ -1387,7 +1363,7 @@ mp.cmds.add(['slay'], (player, id) => {
                     resolve();
                 }
 
-            }).catch((err) => {mp.chat.err(player, `${err}`)});
+            }).catch((err) => { mp.chat.err(player, `${err}`) });
             return;
         }
         mp.chat.err(player, `${CONFIG.noauth}`)
@@ -1597,11 +1573,11 @@ mp.cmds.add(['setaped'], async (player, fullText, id, model) => {
         mp.chat.err(player, `${CONFIG.noauth}`)
     }),
     mp.cmds.add(['vinfo'], (player, sqlid) => {
-        if(!sqlid) return mp.chat.info(player, `Use: /vinfo [sqlid]`);
-        if(player.isAdmin > 2) {
+        if (!sqlid) return mp.chat.info(player, `Use: /vinfo [sqlid]`);
+        if (player.isAdmin > 2) {
             var foundVeh = false;
-            mp.vehicles.forEach(veh => { if(veh.getVariable('sqlID') == sqlid) { foundVeh = true, mp.events.call('veh:getData', player, veh); } });
-            if(!foundVeh) { return mp.chat.err(player, `No vehicle with that SQLID was found spawned.`); }
+            mp.vehicles.forEach(veh => { if (veh.getVariable('sqlID') == sqlid) { foundVeh = true, mp.events.call('veh:getData', player, veh); } });
+            if (!foundVeh) { return mp.chat.err(player, `No vehicle with that SQLID was found spawned.`); }
             return;
         }
         mp.chat.err(player, `${CONFIG.noauth}`);
@@ -1995,26 +1971,26 @@ mp.cmds.add(['toga'], (player, arg) => {
         }, serverRestart / 2);
     }
 
-    mp.cmds.add(['ebr'], (player, browser) => {
-        if(browser && player.isAdmin > 7) {
-            player.call('requestRoute', [browser, false, false]);
-            mp.chat.aPush(player, `${browser}`);
-        }
-    })
+mp.cmds.add(['ebr'], (player, browser) => {
+    if (browser && player.isAdmin > 7) {
+        player.call('requestRoute', [browser, false, false]);
+        mp.chat.aPush(player, `${browser}`);
+    }
+})
 
-    mp.cmds.add(['vclean'], (player, sqlid) => {
-        if(player.isAdmin > 2 && player.adminDuty || player.isAdmin > 7) {
-            if(!sqlid) {
-                if(player.vehicle && player.vehicle.getVariable('sqlID')) { sqlid = player.vehicle.getVariable('sqlID') }
-                else return mp.chat.info(player, `Use: /alean [Current Vehicle / SQLID]`);
+mp.cmds.add(['vclean'], (player, sqlid) => {
+    if (player.isAdmin > 2 && player.adminDuty || player.isAdmin > 7) {
+        if (!sqlid) {
+            if (player.vehicle && player.vehicle.getVariable('sqlID')) { sqlid = player.vehicle.getVariable('sqlID') }
+            else return mp.chat.info(player, `Use: /alean [Current Vehicle / SQLID]`);
 
-                mp.vehicles.forEach(veh => { if(veh.getVariable('sqlID') == sqlid) { mp.events.call('updateDirtLevel', player, veh, 0) } });
-                mp.chat.aPush(player, `You have cleaned vehicle with sqlid: ${sqlid}`);
-            }
-            return;
+            mp.vehicles.forEach(veh => { if (veh.getVariable('sqlID') == sqlid) { mp.events.call('updateDirtLevel', player, veh, 0) } });
+            mp.chat.aPush(player, `You have cleaned vehicle with sqlid: ${sqlid}`);
         }
-        mp.chat.err(player, `${CONFIG.noauth}`);
-    })
+        return;
+    }
+    mp.chat.err(player, `${CONFIG.noauth}`);
+})
 
 // Core Staff System remote events
 mp.events.add({
@@ -2282,9 +2258,9 @@ mp.events.add({
         }
     },
     'alart': (player, event) => {
-        if(player.uuid) {
+        if (player.uuid) {
             mp.core.msgAdmins(`Remote Event has been triggered with name ${event} by player with UUID ${player.uuid}`);
-        } else if(!player.uuid) {
+        } else if (!player.uuid) {
             mp.core.msgAdmins(`Potential middleware attack from player with IP: ${player.ip} SC: ${player.socialClub}`);
         }
     },
@@ -2525,7 +2501,7 @@ mp.events.add({
         mp.log(`${CONFIG.consoleRed}[ADMIN]${CONFIG.consoleWhite} ${player.adminName} is ${CONFIG.consoleRed}Off-Duty${CONFIG.consoleWhite}`)
         return
     },
-    'veh:getData': async(player, vehicle) => {
+    'veh:getData': async (player, vehicle) => {
         if (player.isAdmin > 2) {
             const vehicleName = await player.callProc('proc::vehicleName', [vehicle.model]);
             const dist = await player.callProc('proc:getDist', [vehicle]);
@@ -2561,11 +2537,11 @@ mp.events.add({
             if (player.isAdmin > 2 && player.adminDuty || player.isAdmin > 7) return
             player.cheatViolations.push(flag);
 
-            if(player.cheatViolations.length > 6) {
+            if (player.cheatViolations.length > 6) {
                 mp.players.forEach((ps) => { if (ps.isAdmin > 0 && ps.getVariable('toggledAdmin') === false) { mp.chat.ac(ps, `!{white}${player.characterName} [${player.id}] was kicked for maximum anticheat violations.`) } });
                 mp.chat.ac(player, `You were kicked for maximum anti cheat violations permitted. This action has been logged.`);
                 setTimeout(() => {
-                    if(player) { player.kick() }
+                    if (player) { player.kick() }
                 }, 100);
                 return;
             }
@@ -2598,7 +2574,7 @@ mp.events.add({
                 }).then(() => {
                     db.Accounts.update({
                         banStatus: 1,
-                    }, { where: {id: player.sqlID} }).then(() => {
+                    }, { where: { id: player.sqlID } }).then(() => {
                         player.setVariable('loggedIn', false)
                         player.call('client:loginHandler', ['banned'])
                         player.call('requestRoute', ['ban', true, true]);

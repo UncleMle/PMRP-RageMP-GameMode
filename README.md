@@ -8,6 +8,7 @@ You can contact me at
 
 -Discord unclemole <br>
 -Gamemodes discord server https://discord.gg/6WKZt68qJT
+-Admin Commands Spreadsheet - https://docs.google.com/spreadsheets/d/1DQuoz80rpZ1qjfSk5ry8cN-wrJKIF1UH8QonOqUuHGk/edit#gid=0
 
 ### Contributing and bug reporting
 
@@ -86,7 +87,7 @@ NODEMAILER_EMAIL="< enter app email >"
 NODEMAILER_PASSWORD="< enter app password >"
 ````
 
-Good Tutorial https://www.youtube.com/watch?v=yuOK6D7deTo
+[Good Tutorial](https://www.youtube.com/watch?v=yuOK6D7deTo)
 
 ###### 3. Acquire the RAGEMP server binary and place it in the root directory.
 <img src="https://i.imgur.com/dQudDwL.png">
@@ -98,6 +99,8 @@ Good Tutorial https://www.youtube.com/watch?v=yuOK6D7deTo
 ###### 6. You should now be able to run the .exe file and start the gamemode.
 
 # Misc
+
+If your hosting this gamemode from a server external from your local network ensure to port forward so you can connect. [Getting started with server RAGE:MP](https://wiki.rage.mp/index.php?title=Getting_Started_with_Server)
 
 This gamemode also comes with a UCP and discord intergration which can both be ran separately from the main game server.
 
