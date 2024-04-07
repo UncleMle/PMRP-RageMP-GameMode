@@ -7,7 +7,7 @@ Created using NodeJS, Sequelize, VueJS and Express.
 You can contact me at
 
 -Discord unclemole <br>
--Gamemodes discord server https://discord.gg/6WKZt68qJT
+-Gamemodes discord server https://discord.gg/6WKZt68qJT <br>
 -Admin Commands Spreadsheet - https://docs.google.com/spreadsheets/d/1DQuoz80rpZ1qjfSk5ry8cN-wrJKIF1UH8QonOqUuHGk/edit#gid=0
 
 ### Contributing and bug reporting
