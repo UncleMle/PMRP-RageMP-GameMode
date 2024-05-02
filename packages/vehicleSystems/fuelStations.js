@@ -82,9 +82,11 @@ mp.cmds.add(['fuelstation'], async (player, fullText, option, ...secondOption) =
                         fuelAmount: 23400,
                         litreCost: 2.64,
                         moneyAmount: 0,
-                        pumpPositions: '[]'
+                        pumpPositions: [
+                            player.position
+                        ]
                     }).then((info) => {
-                        var sqlid = JSON.parse(JSON.stringify(info)).id
+                        var sqlid = info.id;
                         mp.chat.aPush(player, `Created new fuel station with SQLID: ${sqlid} NAME: ${secondOption[0]}`);
                         loadFuelStations(), mp.chat.aPush(player, "Fuel stations have been reloaded.")
                     })
