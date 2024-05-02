@@ -487,7 +487,7 @@ async function attemptRegister(player, username, email, pass) {
     const { Op } = require('sequelize')
     Accounts.findAll({
       where: {
-        [Op.or]: [{ uuid: player.uuid }, { email: email }, { username: username }, { socialClub: player.socialClub }, { socialClubId: player.rgscId }, { HWID: player.serial.toString() }]
+        [Op.or]: [{ email: email }, { username: username }, { socialClub: player.socialClub }, { socialClubId: player.rgscId }, { HWID: player.serial.toString() }]
       }
     }).then(async (users) => {
       if (users.length > 0) { return player.call('requestBrowser', [`gui.notify.showNotification("You already have an account.", false, true, 15000, 'fa-solid fa-triangle-exclamation')`]) }
