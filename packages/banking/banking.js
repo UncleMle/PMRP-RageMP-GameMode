@@ -8,17 +8,15 @@ const CONFIG = require('../CoreSystem/chatformatconf').CONFIG;
 mp.events.add({
     'packagesLoaded': () => {
         db.server_atms.findAll({}).then((atms) => {
-            if (atms.length > 0) {
-                loadAtm(atms);
-            }
+            atms.forEach(atm => {
+                loadAtm(atm);
+            });
         }).catch((err) => { mp.log(err) });
 
         db.server_banks.findAll({}).then(banks => {
-            if (banks.length > 0) {
-                banks.forEach(bank => {
-                    loadBank(bank);
-                })
-            }
+            banks.forEach(bank => {
+                loadBank(bank);
+            })
         })
     },
     'numPinData': (player, data) => {
@@ -173,25 +171,23 @@ mp.cmds.add(['addbank'], async (player, name) => {
 });
 
 function loadAtm(atm) {
-    atms.forEach(atm => {
-        var pos = JSON.parse(atm.position);
-        mp.blips.new(434, new mp.Vector3(pos),
-            {
-                name: 'ATM',
-                color: 43,
-                shortRange: true,
-            });
-        var atmCol = mp.colshapes.newRectangle(pos.x, pos.y, 1, 1);
-        atmCol.setVariable('atm', atm.id);
-        mp.markers.new(27, new mp.Vector3(pos.x, pos.y, pos.z - 0.95), 0.8,
-            {
-                direction: 0,
-                rotation: 0,
-                color: [175, 237, 174, 255],
-                visible: true,
-                dimension: 0
-            });
-    })
+    var pos = JSON.parse(atm.position);
+    mp.blips.new(434, new mp.Vector3(pos),
+        {
+            name: 'ATM',
+            color: 43,
+            shortRange: true,
+        });
+    var atmCol = mp.colshapes.newRectangle(pos.x, pos.y, 1, 1);
+    atmCol.setVariable('atm', atm.id);
+    mp.markers.new(27, new mp.Vector3(pos.x, pos.y, pos.z - 0.95), 0.8,
+        {
+            direction: 0,
+            rotation: 0,
+            color: [175, 237, 174, 255],
+            visible: true,
+            dimension: 0
+        });
 }
 
 function loadBank(bank) {
