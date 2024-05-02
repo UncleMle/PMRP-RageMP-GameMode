@@ -7,8 +7,8 @@ Created using NodeJS, Sequelize, VueJS and Express.
 You can contact me at
 
 -Discord unclemole <br>
--Gamemodes discord server https://discord.gg/6WKZt68qJT
--Admin Commands Spreadsheet - https://docs.google.com/spreadsheets/d/1DQuoz80rpZ1qjfSk5ry8cN-wrJKIF1UH8QonOqUuHGk/edit#gid=0
+-[Gamemodes discord server](https://discord.gg/6WKZt68qJT)<br>
+-[Admin Commands Spreadsheet](https://docs.google.com/spreadsheets/d/1DQuoz80rpZ1qjfSk5ry8cN-wrJKIF1UH8QonOqUuHGk/edit#gid=0)
 
 ### Contributing and bug reporting
 
@@ -27,7 +27,11 @@ To report a bug you can open an issue on the github repo (Don't contact me on di
 
 ### Features
 
+# Bear in mind the majority of features have dynamic locations and will have to be added in game to the DB
+# by yourself with the provided commands.
+
 ## I will not be adding more features to this gamemode. If you want a feature you will have to add it yourself.
+
 
 * Fully synced vehicle systems (sirens, interactions, WI menu, Dirt, fuel, indicators, stalling system, tyres, windows, distance calculation)
 

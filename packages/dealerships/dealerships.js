@@ -1,6 +1,7 @@
 const db = require('../models');
 require('../CoreSystem/coreApi');
 const CONFIG = require('../CoreSystem/chatformatconf').CONFIG;
+const defaultVehicles = require('./defaultVehicles.json');
 
 mp.events.add({
     packagesLoaded: () => {
@@ -177,7 +178,7 @@ mp.cmds.add(['vdealer'], async (player, fullText, optionOne, ...optionTwo) => {
                     try {
                         db.player_dealerships.create({
                             OwnerId: player.characterId,
-                            currentVehicles: "[]",
+                            currentVehicles: defaultVehicles,
                             moneyAmount: 0,
                             dealerName: optionTwo.join(' '),
                             dealerColour: '#FFFFFF',
@@ -194,6 +195,9 @@ mp.cmds.add(['vdealer'], async (player, fullText, optionOne, ...optionTwo) => {
             case 'update':
                 {
                     if (!optionTwo[0]) return mp.chat.info(player, `Use: /vdealer [update] [item]`);
+
+
+
                     break;
                 }
             default:

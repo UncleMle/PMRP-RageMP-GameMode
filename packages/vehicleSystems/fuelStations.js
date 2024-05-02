@@ -160,23 +160,23 @@ mp.cmds.add(['fuelstation'], async (player, fullText, option, ...secondOption) =
                     break;
                 }
             case 'refuel':
-            {
-                if (!secondOption[0]) return mp.chat.err(player, `Missing parameter [sqlid]`);
-                db.player_fuelStations.findAll({ where: {id: secondOption[0]} }).then((fuelstation) => {
-                    if(fuelstation.length > 0) {
-                        mp.colshapes.forEach((col) => {
-                            if(col.getVariable('fuelPump')) {
-                                col.setVariable('fuelLevel', 23400);
-                                db.player_fuelStations.update({
-                                    fuelAmount: 23400
-                                }, { where: { id: col.getVariable('fuelPump') } }).catch((err) => { mp.log(err) });
-                            }
-                        })
-                        mp.chat.aPush(player, `You refuelled fuel station with SQLID: ${secondOption[0]}`);
-                    }
-                })
-                break;
-            }
+                {
+                    if (!secondOption[0]) return mp.chat.err(player, `Missing parameter [sqlid]`);
+                    db.player_fuelStations.findAll({ where: { id: secondOption[0] } }).then((fuelstation) => {
+                        if (fuelstation.length > 0) {
+                            mp.colshapes.forEach((col) => {
+                                if (col.getVariable('fuelPump')) {
+                                    col.setVariable('fuelLevel', 23400);
+                                    db.player_fuelStations.update({
+                                        fuelAmount: 23400
+                                    }, { where: { id: col.getVariable('fuelPump') } }).catch((err) => { mp.log(err) });
+                                }
+                            })
+                            mp.chat.aPush(player, `You refuelled fuel station with SQLID: ${secondOption[0]}`);
+                        }
+                    })
+                    break;
+                }
             default:
                 mp.chat.err(player, `Enter a valid parameter from [${allParams.join('/')}]`)
                 break;

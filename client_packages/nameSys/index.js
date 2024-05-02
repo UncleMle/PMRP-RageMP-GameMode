@@ -184,11 +184,10 @@ class nametagSys {
 
 						if (mp.players.local.aliasTog) {
 							graphics.drawText(
-								`${
-									player.getVariable("totalPlayTime") &&
+								`${player.getVariable("totalPlayTime") &&
 									player.getVariable("totalPlayTime") < 2880
-										? "~g~(New Player)~w~~n~"
-										: ""
+									? "~g~(New Player)~w~~n~"
+									: ""
 								} ~HUD_COLOUR_PURPLELIGHT~#${sid}~w~`,
 								[x, y],
 								{
@@ -201,15 +200,13 @@ class nametagSys {
 						}
 						if (!mp.players.local.aliasTog) {
 							graphics.drawText(
-								`${
-									player.getVariable("totalPlayTime") &&
+								`${player.getVariable("totalPlayTime") &&
 									player.getVariable("totalPlayTime") < 2880
-										? "~g~(New Player)~w~~n~"
-										: ""
-								} ${
-									player.nickName
-										? `~HUD_COLOUR_PURPLELIGHT~#${sid}~w~ ${player.nickName}`
-										: `~HUD_COLOUR_PURPLELIGHT~#${sid}~w~`
+									? "~g~(New Player)~w~~n~"
+									: ""
+								} ${player.nickName
+									? `~HUD_COLOUR_PURPLELIGHT~#${sid}~w~ ${player.nickName}`
+									: `~HUD_COLOUR_PURPLELIGHT~#${sid}~w~`
 								}`,
 								[x, y],
 								{
@@ -247,12 +244,12 @@ class nametagSys {
 				mp.players.local.notifMsg = null;
 				mp.events.callRemote("ameMsg", null);
 
-				if(ameTimer) {
+				if (ameTimer) {
 					clearInterval(ameTimer);
 					ameTimer = undefined;
 				}
 
-				if(this.ameNot) {
+				if (this.ameNot) {
 					clearInterval(this.ameNot);
 					this.ameNot = undefined;
 				}
@@ -276,7 +273,7 @@ class nametagSys {
 					if (this.x > 0.62) {
 						mp.players.local.ameMsg = null;
 
-						if(this.ameNot) {
+						if (this.ameNot) {
 							clearInterval(this.ameNot);
 							this.ameNot = undefined;
 						}

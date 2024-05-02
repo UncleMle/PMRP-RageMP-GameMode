@@ -165,9 +165,11 @@ mp.events.add({
         mp.game.cam.renderScriptCams(false, false, 0, false, false);
         mp.players.local.freezePosition(false);
         mp.game.graphics.transitionFromBlurred(100);
+        /*
         setTimeout(() => {
             mp.discord.update(`Playing on Paramount Roleplay`, `Playing as ${mp.players.local.nickName} [${mp.players.local.remoteId}]`)
         }, 3000);
+        */
     },
     'client:hideLoginScreen': () => {
         mp.events.call('requestRoute', '/', true, false);
